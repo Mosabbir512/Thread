@@ -1,0 +1,24 @@
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Mosabbir");
+       // Thread.currentThread().getThreadGroup().getParent().list();
+
+        System.out.println("main start::" + Thread.currentThread().getName());
+
+        Runnable target=new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<10;i++){
+                    System.out.println("the thered name is : "+ Thread.currentThread().getName());
+                }
+            }
+        };
+        Thread t=new Thread(target,"SDLC Pro");
+        t.start();
+        for(int i=0;i<10;i++){
+            System.out.println("the thered name is : "+ Thread.currentThread().getName());
+        }
+
+        System.out.println("main end::" + Thread.currentThread().getName());
+    }
+}
