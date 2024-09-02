@@ -1,0 +1,46 @@
+
+class target implements Runnable{
+    @Override
+    public void run() {
+        for(int i=0;i<10;i++){
+            System.out.println("the thered name is : "+ Thread.currentThread().getName());
+        }
+    }
+}
+
+class Task2 extends Thread{
+    public Task2() {
+        super("sdlc-pro2");
+    }
+
+    @Override
+    public void run() {
+        for(int i=0;i<10;i++){
+            System.out.println("the thered name is : "+ Thread.currentThread().getName());
+        }
+    }
+}
+
+
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Mosabbir");
+       // Thread.currentThread().getThreadGroup().getParent().list();
+
+        System.out.println("main start::" + Thread.currentThread().getName());
+
+        Runnable target=new target();
+        Thread t=new Thread(target,"SDLC Pro");
+        t.start();
+
+        Task2 task2=new Task2();
+        task2.start();
+
+        for(int i=0;i<10;i++){
+            System.out.println("the thered name is : "+ Thread.currentThread().getName());
+        }
+
+        System.out.println("main end::" + Thread.currentThread().getName());
+    }
+}
