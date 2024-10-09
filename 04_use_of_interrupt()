@@ -1,0 +1,52 @@
+
+public class Main {
+
+    static  int value=0;
+
+    public static void main(String[] args) throws InterruptedException{
+
+       Thread t=new Thread(() -> {
+            System.out.println("start task");
+            try {
+                Thread.sleep(10_000);   // ei sir er 10 s gumanor kotha chilo kintu t.interuupt() call korar karone se bole je
+            } catch (InterruptedException e) {           // tomake ar ghumate hobe na value diye dilam tumake ghum theke uthe jao
+                e.printStackTrace();
+            }
+            // access resourch
+
+           System.out.println("value is = "+ value);
+            System.out.println("end task");
+
+        });
+
+       t.start();
+
+       Thread.sleep(1000);
+
+       value=10;
+       t.interrupt();    // jehetu ami 1s por  value assign kore boss ke  call disi tai se ar ghumabe na   mane 9 sec save hobe
+
+        System.out.println("end main");
+
+    }
+}
+
+
+
+
+
+/*
+
+output:
+
+start task
+end main
+value is = 10
+end task
+java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method)
+	at Main.lambda$main$0(Main.java:11)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+
+
+*/
