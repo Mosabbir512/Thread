@@ -14,7 +14,7 @@ public class Main {
             }
             // access resourch
 
-           System.out.println("value is = "+ value);
+           System.out.println("Resourch/value is = "+ value);
             System.out.println("end task");
 
         });
