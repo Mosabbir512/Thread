@@ -1,0 +1,53 @@
+
+class Task implements Runnable{
+
+    @Override
+    public void run() {
+        System.out.println("i am waiting bro! ...");
+        synchronized (this){
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println("rest of the task......");
+    }
+}
+
+
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+
+        Task task=new Task();
+        Thread t=new Thread(task);
+        t.start();
+
+        Thread.sleep(1000);
+
+        System.out.println("Thread= "+t.getState());
+        System.out.println("main= "+Thread.currentThread().getState());
+
+        synchronized (task){
+            task.notify();
+        }
+
+        System.out.println("main end::" + Thread.currentThread().getName());
+        System.out.println("main ended....");
+    }
+}
+
+/*
+output: 
+
+i am waiting bro! ...
+Thread= WAITING
+main= RUNNABLE
+rest of the task......
+main end::main
+main ended....
+*/
+
+
+
