@@ -8,7 +8,7 @@ public class Main {
 
         int count= Thread.activeCount();
         Thread[] threads=new Thread[10];
-        int actualThreadCount=Thread.enumerate(threads);
+        int actualThreadCount=Thread.enumerate(threads);   // now aikhane je thread ta active and active er sub thread gular count hobe enumerate() er kaj
         for(int i=0;i<actualThreadCount;i++){
             System.out.println(threads[i]);
         }
