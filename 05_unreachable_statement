@@ -1,0 +1,31 @@
+
+public class Main {
+
+    static  int value=0;
+
+    public static void main(String[] args) throws InterruptedException{
+
+       Thread t=new Thread(() -> {
+            System.out.println("start task");
+
+            int count=0;
+            while (true){     // unreachable statement . java compiler eita compile e kore na
+                count++;
+            }
+
+           System.out.println("Resourch/value is = "+ count);
+            System.out.println("end task");
+
+        });
+
+       t.start();
+
+       Thread.sleep(1000);
+
+       value=10;
+       t.interrupt();    // jehetu ami 1s por  value assign kore boss ke  call disi tai se ar ghumabe na   mane 9 sec save hobe
+
+        System.out.println("end main");
+
+    }
+}
