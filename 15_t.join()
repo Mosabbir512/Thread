@@ -16,7 +16,13 @@ public class Main {
         t.setName("TASK1");
         t.start();
 
+
+        
         t.join();  // method caller => main thread, instance => Thread-0
+
+        // while(t.isAlive()){     like as t.join()
+        // }
+
         System.out.println("sum is : "+ sum);
 
 
