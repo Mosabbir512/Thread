@@ -1,0 +1,35 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+    public static int[] arr={1,2,3,4,5};
+    public static int sum=0;
+    public static void main(String[] args) throws Exception {
+
+        Thread t=new Thread(()->{
+            System.out.println("start for sum : "+Thread.currentThread().getName());
+            for (int it:arr){
+                sum+=it;
+                sleep(1000);
+            }
+
+        });
+
+        t.start();
+
+
+        t.join(3000);  // method caller => main thread, instance => Thread-0  // now se 3s wait kore cole jabe // finaly je value pabe sum er tai print korbe // sum=6
+        System.out.println("sum is : "+ sum);
+
+
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
