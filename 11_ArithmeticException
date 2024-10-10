@@ -1,0 +1,43 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+
+    public static void main(String[] args) throws InterruptedException{
+
+        System.out.println("started");
+        m1();
+        System.out.println("ended");
+
+    }
+    static void m1(){
+        System.out.println("m1");
+        m2();
+    }
+    static void m2(){
+        System.out.println("m2");
+        try {
+            System.out.println(1/0);   
+        } 
+        catch (ArithmeticException e){
+            System.out.println(e.getMessage());
+        }
+        m3();
+    }
+    static void m3(){
+        System.out.println("m3");
+
+    }
+}
+
+
+/*
+output: 
+
+started
+m1
+m2
+/ by zero
+m3
+ended
+*/
