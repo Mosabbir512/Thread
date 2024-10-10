@@ -1,0 +1,36 @@
+import javax.swing.plaf.TableHeaderUI;
+
+public class Main {
+
+    public static void main(String[] args) throws InterruptedException{
+
+        //Thread.currentThread().getThreadGroup().getParent().list();
+        m1();
+
+    }
+    static void m1(){
+        m2();
+        System.out.println("m1");
+    }
+    static void m2(){
+        m3();
+        System.out.println("m2");
+    }
+    static void m3(){
+        System.out.println("m3");
+        Thread.dumpStack();  // kon method kotha theke call hocce ai jinish gula show kore
+    }
+}
+
+
+
+/*
+output: 
+
+java.lang.Exception: Stack trace
+	at java.base/java.lang.Thread.dumpStack(Thread.java:1380)
+	at Main.m3(Main.java:21)
+	at Main.m2(Main.java:16)
+	at Main.m1(Main.java:12)
+	at Main.main(Main.java:8)
+*/
