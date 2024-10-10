@@ -29,3 +29,41 @@ public class Main {
         }
     }
 }
+
+
+/*
+output: 
+m3
+class name= java.lang.Thread
+file name= Thread.java
+method name= dumpThreads
+line number= -2
+---------------
+class name= java.lang.Thread
+file name= Thread.java
+method name= getAllStackTraces
+line number= 1662
+---------------
+class name= Main
+file name= Main.java
+method name= m3
+line number= 22
+---------------
+class name= Main
+file name= Main.java
+method name= m2
+line number= 17
+---------------
+class name= Main
+file name= Main.java
+method name= m1
+line number= 13
+---------------
+class name= Main
+file name= Main.java
+method name= main
+line number= 9
+---------------
+m2
+m1
+*/
