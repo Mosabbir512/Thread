@@ -1,0 +1,40 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+    public static int[] arr={1,2,3,4,5};
+    public static int sum=0;
+    public static void main(String[] args) throws Exception {
+
+        Thread t=new Thread(()->{
+            System.out.println("start for sum : "+Thread.currentThread().getName());
+           for(int i=0;i<100;i++){
+               System.out.println("value  "+ i);  // ai somoye o lock niye gele dead lock hobe
+           }
+        });
+
+        t.start(); // "t" lock acquire korse
+
+        Thread.sleep(2);
+
+        t.suspend();  // Blocked state with lock // lock niye gese
+
+        System.out.println("suspend complete");  // kintu print to lock cay
+
+        Thread.sleep(4000);
+
+        t.resume();  // bole lock dibo tobe age print kore aso niche  (call koro amake) . print o run hoy na t.reseume o run hoy na
+
+
+
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
