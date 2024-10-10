@@ -1,0 +1,37 @@
+
+public class Main {
+
+    public static void main(String[] args) throws InterruptedException{
+
+        System.out.println("started");
+        m1();
+        System.out.println("ended");
+
+    }
+    static void m1(){
+        System.out.println("m1");
+        m2();
+    }
+    static void m2(){
+        System.out.println("m2");
+        System.out.println(1/0);  // exception na handle korle jvm by defalult handle kore
+        m3();
+    }
+    
+    static void m3(){
+        System.out.println("m3");
+
+    }
+}
+
+/*
+output: 
+started
+m1
+m2
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at Main.m2(Main.java:19)
+	at Main.m1(Main.java:15)
+	at Main.main(Main.java:9)
+
+*/
