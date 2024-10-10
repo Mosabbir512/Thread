@@ -1,0 +1,29 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+
+        Thread t=new Thread(()->{
+            System.out.println("started: "+Thread.currentThread().getName());
+        });
+
+        t.setName("TASK1");
+        t.run();   // notun thread create kore na
+        
+        Thread tt=new Thread(()->{
+            System.out.println("started: "+Thread.currentThread().getName());
+        });
+        tt.setName("TASK2");
+        tt.start();  // notun thread create kore
+
+    }
+}
+
+
+/*
+output: 
+
+started: main
+started: TASK2
+*/
