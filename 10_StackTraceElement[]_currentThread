@@ -1,0 +1,31 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+
+    public static void main(String[] args) throws InterruptedException{
+
+        //Thread.currentThread().getThreadGroup().getParent().list();
+        m1();
+
+    }
+    static void m1(){
+        m2();
+        System.out.println("m1");
+    }
+    static void m2(){
+        m3();
+        System.out.println("m2");
+    }
+    static void m3(){
+        System.out.println("m3");
+          Map<Thread,StackTraceElement[]>map= Thread.getAllStackTraces();
+        for (StackTraceElement e: map.get(Thread.currentThread())){
+            System.out.println("class name= "+e.getClassName());
+            System.out.println("file name= "+e.getFileName());
+            System.out.println("method name= "+e.getMethodName());
+            System.out.println("line number= "+e.getLineNumber());
+            System.out.println("---------------");
+        }
+    }
+}
