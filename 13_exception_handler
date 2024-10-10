@@ -1,0 +1,47 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception{
+        // jvm er kase exception ta jabe. kintu ami take boleci je ami handle korechi. tai se abar eita diye handle korabe ......
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            System.out.println("EXcepion occrued on thread: "+thread.getName());
+            System.out.println("Exception: "+throwable.getMessage());
+            throwable.printStackTrace();
+        });
+
+
+        System.out.println("started");
+        m1();
+        System.out.println("ended");
+
+    }
+    static void m1(){
+        System.out.println("m1");
+        m2();
+    }
+    static void m2(){
+        System.out.println("m2");
+        System.out.println(1/0);
+        m3();
+    }
+    
+    static void m3(){
+        System.out.println("m3");
+
+    }
+}
+
+/*
+output: 
+started
+m1
+m2
+EXcepion occrued on thread: main
+Exception: / by zero
+java.lang.ArithmeticException: / by zero
+	at Main.m2(Main.java:26)
+	at Main.m1(Main.java:22)
+	at Main.main(Main.java:16)
+*/
