@@ -1,0 +1,35 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+
+    public static void main(String[] args) throws InterruptedException{
+
+        //Thread.currentThread().getThreadGroup().getParent().list();
+        m1();
+
+    }
+    static void m1(){
+        m2();
+        System.out.println("m1");
+    }
+    static void m2(){
+        m3();
+        System.out.println("m2");
+    }
+    static void m3(){
+        System.out.println("m3");
+          Map<Thread,StackTraceElement[]>map= Thread.getAllStackTraces();   // Thread & tar element gulor trace rakhe
+        System.out.println(map);
+    }
+}
+
+/*
+output: 
+m3
+{Thread[Common-Cleaner,8,InnocuousThreadGroup]=[Ljava.lang.StackTraceElement;@16b98e56, Thread[Signal Dispatcher,9,system]=[Ljava.lang.StackTraceElement;@7ef20235, Thread[Reference Handler,10,system]=[Ljava.lang.StackTraceElement;@27d6c5e0, Thread[main,5,main]=[Ljava.lang.StackTraceElement;@4f3f5b24, Thread[Notification Thread,9,system]=[Ljava.lang.StackTraceElement;@15aeb7ab, Thread[Finalizer,8,system]=[Ljava.lang.StackTraceElement;@7b23ec81, Thread[Monitor Ctrl-Break,5,main]=[Ljava.lang.StackTraceElement;@6acbcfc0, Thread[Attach Listener,5,system]=[Ljava.lang.StackTraceElement;@5f184fc6}
+m2
+m1
+
+
+*/
