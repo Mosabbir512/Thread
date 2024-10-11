@@ -1,0 +1,54 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+        Thread main=Thread.currentThread();
+        Thread t=new Thread(()->{
+
+           for(int i=0;i<100;i++){
+               System.out.println(i+" main Thread state: "+ main.getState());
+               sleep(100);
+           }
+        });
+
+        System.out.println(t.isDaemon());
+        t.setDaemon(true);
+        t.start();
+        System.out.println(t.isDaemon());
+        sleep(1000);
+        System.out.println("main ended");   // main ses t thread o ses
+
+
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+/*
+output:
+false
+true
+0 main Thread state: TIMED_WAITING
+1 main Thread state: TIMED_WAITING
+2 main Thread state: TIMED_WAITING
+3 main Thread state: TIMED_WAITING
+4 main Thread state: TIMED_WAITING
+5 main Thread state: TIMED_WAITING
+6 main Thread state: TIMED_WAITING
+7 main Thread state: TIMED_WAITING
+8 main Thread state: TIMED_WAITING
+main ended
+
+*/
