@@ -1,0 +1,155 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("main started");
+        Thread mainThread=Thread.currentThread();
+
+        Thread t1=new Thread(()->{
+            System.out.println("t1 started");
+
+            Thread t1thread=Thread.currentThread();
+            Thread t2Thread=new Thread(()->{    // t2 beche thakbe t1 more jaowar por o karon dada(main) thread beche ache
+                for(int i=0;i<=100;i++){
+                    System.out.println(i+" , status for t1"+t1thread.getState()+"  main status"+mainThread.getState());
+                    sleep(10);
+                }
+            });
+
+            t2Thread.setDaemon(true);
+            t2Thread.start();
+
+            sleep(200);   // t1 20 ms por more jabe
+            System.out.println("t1thread ended");
+
+        });
+        t1.start();
+        sleep(10000);  // 10s por morbe
+        System.out.println("main ended");
+
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
+
+
+/*
+output: 
+"C:\Program Files\Java\jdk-18\bin\java.exe" "-javaagent:D:\intellij idea folder\intellij idea installation folder\IntelliJ IDEA 2023.1\lib\idea_rt.jar=61734:D:\intellij idea folder\intellij idea installation folder\IntelliJ IDEA 2023.1\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath "D:\Java code\Course_Thread\Mastering_on_java_and_Concurrency\out\production\Mastering_on_java_and_Concurrency" Main
+main started
+t1 started
+0 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+1 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+2 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+3 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+4 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+5 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+6 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+7 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+8 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+9 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+10 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+11 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+t1thread ended
+12 , status for t1TERMINATED  main statusTIMED_WAITING
+13 , status for t1TERMINATED  main statusTIMED_WAITING
+14 , status for t1TERMINATED  main statusTIMED_WAITING
+15 , status for t1TERMINATED  main statusTIMED_WAITING
+16 , status for t1TERMINATED  main statusTIMED_WAITING
+17 , status for t1TERMINATED  main statusTIMED_WAITING
+18 , status for t1TERMINATED  main statusTIMED_WAITING
+19 , status for t1TERMINATED  main statusTIMED_WAITING
+20 , status for t1TERMINATED  main statusTIMED_WAITING
+21 , status for t1TERMINATED  main statusTIMED_WAITING
+22 , status for t1TERMINATED  main statusTIMED_WAITING
+23 , status for t1TERMINATED  main statusTIMED_WAITING
+24 , status for t1TERMINATED  main statusTIMED_WAITING
+25 , status for t1TERMINATED  main statusTIMED_WAITING
+26 , status for t1TERMINATED  main statusTIMED_WAITING
+27 , status for t1TERMINATED  main statusTIMED_WAITING
+28 , status for t1TERMINATED  main statusTIMED_WAITING
+29 , status for t1TERMINATED  main statusTIMED_WAITING
+30 , status for t1TERMINATED  main statusTIMED_WAITING
+31 , status for t1TERMINATED  main statusTIMED_WAITING
+32 , status for t1TERMINATED  main statusTIMED_WAITING
+33 , status for t1TERMINATED  main statusTIMED_WAITING
+34 , status for t1TERMINATED  main statusTIMED_WAITING
+35 , status for t1TERMINATED  main statusTIMED_WAITING
+36 , status for t1TERMINATED  main statusTIMED_WAITING
+37 , status for t1TERMINATED  main statusTIMED_WAITING
+38 , status for t1TERMINATED  main statusTIMED_WAITING
+39 , status for t1TERMINATED  main statusTIMED_WAITING
+40 , status for t1TERMINATED  main statusTIMED_WAITING
+41 , status for t1TERMINATED  main statusTIMED_WAITING
+42 , status for t1TERMINATED  main statusTIMED_WAITING
+43 , status for t1TERMINATED  main statusTIMED_WAITING
+44 , status for t1TERMINATED  main statusTIMED_WAITING
+45 , status for t1TERMINATED  main statusTIMED_WAITING
+46 , status for t1TERMINATED  main statusTIMED_WAITING
+47 , status for t1TERMINATED  main statusTIMED_WAITING
+48 , status for t1TERMINATED  main statusTIMED_WAITING
+49 , status for t1TERMINATED  main statusTIMED_WAITING
+50 , status for t1TERMINATED  main statusTIMED_WAITING
+51 , status for t1TERMINATED  main statusTIMED_WAITING
+52 , status for t1TERMINATED  main statusTIMED_WAITING
+53 , status for t1TERMINATED  main statusTIMED_WAITING
+54 , status for t1TERMINATED  main statusTIMED_WAITING
+55 , status for t1TERMINATED  main statusTIMED_WAITING
+56 , status for t1TERMINATED  main statusTIMED_WAITING
+57 , status for t1TERMINATED  main statusTIMED_WAITING
+58 , status for t1TERMINATED  main statusTIMED_WAITING
+59 , status for t1TERMINATED  main statusTIMED_WAITING
+60 , status for t1TERMINATED  main statusTIMED_WAITING
+61 , status for t1TERMINATED  main statusTIMED_WAITING
+62 , status for t1TERMINATED  main statusTIMED_WAITING
+63 , status for t1TERMINATED  main statusTIMED_WAITING
+64 , status for t1TERMINATED  main statusTIMED_WAITING
+65 , status for t1TERMINATED  main statusTIMED_WAITING
+66 , status for t1TERMINATED  main statusTIMED_WAITING
+67 , status for t1TERMINATED  main statusTIMED_WAITING
+68 , status for t1TERMINATED  main statusTIMED_WAITING
+69 , status for t1TERMINATED  main statusTIMED_WAITING
+70 , status for t1TERMINATED  main statusTIMED_WAITING
+71 , status for t1TERMINATED  main statusTIMED_WAITING
+72 , status for t1TERMINATED  main statusTIMED_WAITING
+73 , status for t1TERMINATED  main statusTIMED_WAITING
+74 , status for t1TERMINATED  main statusTIMED_WAITING
+75 , status for t1TERMINATED  main statusTIMED_WAITING
+76 , status for t1TERMINATED  main statusTIMED_WAITING
+77 , status for t1TERMINATED  main statusTIMED_WAITING
+78 , status for t1TERMINATED  main statusTIMED_WAITING
+79 , status for t1TERMINATED  main statusTIMED_WAITING
+80 , status for t1TERMINATED  main statusTIMED_WAITING
+81 , status for t1TERMINATED  main statusTIMED_WAITING
+82 , status for t1TERMINATED  main statusTIMED_WAITING
+83 , status for t1TERMINATED  main statusTIMED_WAITING
+84 , status for t1TERMINATED  main statusTIMED_WAITING
+85 , status for t1TERMINATED  main statusTIMED_WAITING
+86 , status for t1TERMINATED  main statusTIMED_WAITING
+87 , status for t1TERMINATED  main statusTIMED_WAITING
+88 , status for t1TERMINATED  main statusTIMED_WAITING
+89 , status for t1TERMINATED  main statusTIMED_WAITING
+90 , status for t1TERMINATED  main statusTIMED_WAITING
+91 , status for t1TERMINATED  main statusTIMED_WAITING
+92 , status for t1TERMINATED  main statusTIMED_WAITING
+93 , status for t1TERMINATED  main statusTIMED_WAITING
+94 , status for t1TERMINATED  main statusTIMED_WAITING
+95 , status for t1TERMINATED  main statusTIMED_WAITING
+96 , status for t1TERMINATED  main statusTIMED_WAITING
+97 , status for t1TERMINATED  main statusTIMED_WAITING
+98 , status for t1TERMINATED  main statusTIMED_WAITING
+99 , status for t1TERMINATED  main statusTIMED_WAITING
+100 , status for t1TERMINATED  main statusTIMED_WAITING
+main ended
+
+Process finished with exit code 0
+*/
