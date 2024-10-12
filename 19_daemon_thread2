@@ -1,0 +1,67 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.util.Map;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("main started");
+        Thread mainThread=Thread.currentThread();
+
+        Thread t1=new Thread(()->{
+            System.out.println("t1 started");
+
+            Thread t1thread=Thread.currentThread();
+            Thread t2Thread=new Thread(()->{    // t1 er sathe sathe daemon o more jaba
+                for(int i=0;i<=100;i++){
+                    System.out.println(i+" , status for t1"+t1thread.getState()+"  main status"+mainThread.getState());
+                    sleep(10);
+                }
+            });
+
+            t2Thread.setDaemon(true);
+            t2Thread.start();
+
+            sleep(200);   // t1 main er pore morbe
+            System.out.println("t1thread ended");
+
+        });
+        t1.start();
+        sleep(100);  // aikhane main age morbe
+        System.out.println("main ended");
+
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+/*
+output: 
+"C:\Program Files\Java\jdk-18\bin\java.exe" "-javaagent:D:\intellij idea folder\intellij idea installation folder\IntelliJ IDEA 2023.1\lib\idea_rt.jar=61700:D:\intellij idea folder\intellij idea installation folder\IntelliJ IDEA 2023.1\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath "D:\Java code\Course_Thread\Mastering_on_java_and_Concurrency\out\production\Mastering_on_java_and_Concurrency" Main
+main started
+t1 started
+0 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+1 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+2 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+3 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+main ended
+4 , status for t1TIMED_WAITING  main statusTIMED_WAITING
+5 , status for t1TIMED_WAITING  main statusTERMINATED
+6 , status for t1TIMED_WAITING  main statusTERMINATED
+7 , status for t1TIMED_WAITING  main statusTERMINATED
+8 , status for t1TIMED_WAITING  main statusTERMINATED
+9 , status for t1TIMED_WAITING  main statusTERMINATED
+10 , status for t1TIMED_WAITING  main statusTERMINATED
+t1thread ended
+
+Process finished with exit code 0
+
+*/
