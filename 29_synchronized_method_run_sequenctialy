@@ -1,0 +1,147 @@
+
+
+public class Main {
+     static synchronized void staticMethod(){  // class level lock // because call korte kono obj lage na
+         synchronized (Main.class){  // block level class type lock
+
+         }
+     }
+
+     synchronized void even(){
+        for(int i=2;i<=100;i+=2){
+            System.out.println("even = "+i);
+        }
+     }
+
+    synchronized void odd(){
+        for(int i=1;i<=100;i+=2){
+            System.out.println("odd ="+i);
+        }
+    }
+    public static void main(String[] args) throws Exception {
+         Main m=new Main();
+        // Main m2=new Main();
+
+         new Thread(m::even).start();
+         new Thread(m::odd).start();
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
+
+
+/*
+output:
+"C:\Program Files\Java\jdk-18\bin\java.exe" "-javaagent:D:\intellij idea folder\intellij idea installation folder\IntelliJ IDEA 2023.1\lib\idea_rt.jar=50828:D:\intellij idea folder\intellij idea installation folder\IntelliJ IDEA 2023.1\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath "D:\Java code\Course_Thread\Mastering_on_java_and_Concurrency\out\production\Mastering_on_java_and_Concurrency" Main
+even = 2
+even = 4
+even = 6
+even = 8
+even = 10
+even = 12
+even = 14
+even = 16
+even = 18
+even = 20
+even = 22
+even = 24
+even = 26
+even = 28
+even = 30
+even = 32
+even = 34
+even = 36
+even = 38
+even = 40
+even = 42
+even = 44
+even = 46
+even = 48
+even = 50
+even = 52
+even = 54
+even = 56
+even = 58
+even = 60
+even = 62
+even = 64
+even = 66
+even = 68
+even = 70
+even = 72
+even = 74
+even = 76
+even = 78
+even = 80
+even = 82
+even = 84
+even = 86
+even = 88
+even = 90
+even = 92
+even = 94
+even = 96
+even = 98
+even = 100
+odd =1
+odd =3
+odd =5
+odd =7
+odd =9
+odd =11
+odd =13
+odd =15
+odd =17
+odd =19
+odd =21
+odd =23
+odd =25
+odd =27
+odd =29
+odd =31
+odd =33
+odd =35
+odd =37
+odd =39
+odd =41
+odd =43
+odd =45
+odd =47
+odd =49
+odd =51
+odd =53
+odd =55
+odd =57
+odd =59
+odd =61
+odd =63
+odd =65
+odd =67
+odd =69
+odd =71
+odd =73
+odd =75
+odd =77
+odd =79
+odd =81
+odd =83
+odd =85
+odd =87
+odd =89
+odd =91
+odd =93
+odd =95
+odd =97
+odd =99
+
+Process finished with exit code 0
+
+
+*/
