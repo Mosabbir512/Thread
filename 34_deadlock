@@ -1,0 +1,54 @@
+
+
+public class Main {
+
+
+    public static void main(String[] args) throws Exception {
+         Object obj1=new Object();
+         Object obj2=new Object();
+
+         Thread t0=new Thread(()->{
+              synchronized (obj1){
+                  System.out.println(Thread.currentThread().getName()+" locked obj1");
+                  sleep(5);
+                  synchronized (obj2){
+                      System.out.println(Thread.currentThread().getName()+" locked obj2");
+                      System.out.println("resource R2 access");
+                  }
+              }
+         });
+         Thread t1=new Thread(()->{
+                synchronized (obj2){
+                    System.out.println(Thread.currentThread().getName()+" locked obj2");
+                    sleep(5);
+                    synchronized (obj1){
+                        System.out.println(Thread.currentThread().getName());
+                        System.out.println("Resource R1 access");
+                    }
+                }
+         });
+
+         t0.start();
+         t1.start();
+
+        System.out.println("main done");
+
+    }
+
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// can't not finish the execution
+
+/*
+output:
+main done
+Thread-1 locked obj2
+Thread-0 locked obj1
+*/
