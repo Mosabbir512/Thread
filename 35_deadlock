@@ -1,0 +1,69 @@
+import javax.swing.plaf.TableHeaderUI;
+
+class  ServiceA{
+    private int resourseA=10;
+
+    public synchronized void process(ServiceB serviceB){
+        Main.sleep(5);
+        System.out.println("process start by "+ Thread.currentThread().getName()+"inside ServiceA");
+        System.out.println(serviceB.getResourseB());
+        System.out.println("process ended by "+ Thread.currentThread().getName()+"inside ServiceA");
+    }
+
+    public synchronized int getResourceA() {
+        return resourseA;
+    }
+}
+
+class  ServiceB{
+    private int resourseB=20;
+    public synchronized void process(ServiceA serviceA){
+        Main.sleep(6);
+        System.out.println("process start by "+ Thread.currentThread().getName()+"inside ServiceB");
+        System.out.println(serviceA.getResourceA());
+        System.out.println("process ended by "+ Thread.currentThread().getName()+"inside ServiceB");
+    }
+    public synchronized int getResourseB(){
+        return resourseB;
+    }
+}
+
+public class Main {
+
+
+    public static void main(String[] args) throws Exception {
+
+        ServiceA a=new ServiceA();
+        ServiceB b=new ServiceB();
+
+         Thread t0=new Thread(()->{
+             a.process(b);  // locked object a
+         });
+         Thread t1=new Thread(()->{
+             b.process(a);  // locked object b
+         });
+
+         t0.start();
+         t1.start();
+
+        System.out.println("main done");
+
+    }
+
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+/*
+output: continue colbei
+main done
+process start by Thread-0inside ServiceA
+process start by Thread-1inside ServiceB
+
+*/
