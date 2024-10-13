@@ -1,0 +1,42 @@
+
+
+public class Main {
+     static synchronized void staticMethod(){  // class level lock // because call korte kono obj lage na
+         synchronized (Main.class){  // block level class type lock
+
+         }
+     }
+
+     static synchronized void even(){   // static so class level lock
+        for(int i=2;i<=100;i+=2){
+            System.out.println("even = "+i);
+        }
+     }
+
+    static synchronized void odd(){   // static so class level lock
+        for(int i=1;i<=100;i+=2){
+            System.out.println("odd ="+i);
+        }
+    }
+    public static void main(String[] args) throws Exception {
+         Main m=null;
+         Main m2=new Main();  
+
+         new Thread(()->{
+            m.even();    
+         }).start();
+         //new Thread(m2::odd).start();  // run hobe sequentialy because of c<Main.class> obj // one lock
+        new Thread(()->{
+           m2.odd();
+        }).start();
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
