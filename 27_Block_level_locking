@@ -1,0 +1,64 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.math.BigInteger;
+import java.util.Map;
+
+public class Main {
+
+     static int count=0;
+     void increment(){
+         System.out.println(Thread.currentThread().getName());
+         synchronized (this){
+             count++;
+             System.out.println("c-section: "+Thread.currentThread().getName());
+             sleep(1000);
+         }
+         
+
+    }
+
+
+    public static void main(String[] args) throws Exception {
+
+        Thread t1=new Thread(()->{
+            for(int i=1;i<=1000;i++) {
+                Main m1=new Main();
+                m1.increment();  // m1
+            }
+        });
+
+        Thread t2=new Thread(()->{
+            for(int i=1;i<=2000;i++) {
+                Main m1=new Main();
+                m1.increment();   // m2
+            }
+        });
+        Thread t3=new Thread(()->{
+            for(int i=1;i<=1000;i++){
+                Main m1=new Main();
+                m1.increment();
+            }
+        });
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        t1.join();
+        t2.join();
+        t3.join();
+
+        System.out.println("total sum is: "+count);
+
+
+    }
+
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
