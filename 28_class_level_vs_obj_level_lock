@@ -1,0 +1,41 @@
+import javax.swing.plaf.TableHeaderUI;
+import java.math.BigInteger;
+import java.util.Map;
+
+public class Main {
+
+
+     static synchronized void staticMethod(){  // class level lock // because call korte kono obj lage na
+
+         // synchronized (Main.class){  // block level class type lock
+         //    
+        // }
+     }
+
+     void synchronized instanceMethod(){     // obj level lock  // call korte obj lagbe
+
+        // synchronized (this){   // block level obj typ lock
+        //     
+        // }
+     }
+
+    public static void main(String[] args) throws Exception {
+        // staticMethod();
+        Main main=new Main();
+        main.instanceMethod();
+
+        Main.staticMethod();
+
+        Class<Main> classOfMain=Main.class;
+
+    }
+
+    static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception e ){
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+}
