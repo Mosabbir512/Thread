@@ -1,0 +1,97 @@
+import java.util.concurrent.SubmissionPublisher;
+
+class Spoon{
+    private Spouse owner;
+
+    public Spouse getOwner() {
+        return owner;
+    }
+
+    public synchronized void setOwner(Spouse owner) {
+        this.owner = owner;
+    }
+
+    public Spoon(Spouse owner) {
+        this.owner = owner;
+    }
+    public synchronized void eat(){
+        System.out.println("eating by "+owner);
+    }
+}
+class Spouse{
+    private String name;
+    private boolean isHungry=true;
+
+    public Spouse(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public void DinnerWithMyDeer(Spoon spoon, Spouse spouse){
+        while (true){
+            if(spoon.getOwner()!=this){
+                Main.sleep(1000);
+                continue;
+            }
+            if(spouse.isHungry){
+                spoon.setOwner(spouse);
+                System.out.printf("My dear %s, please eat first :: status: %s \n " , spouse.name,Thread.currentThread().getState().name());
+                continue;
+            }
+            spoon.eat();
+            isHungry=false;
+            //spoon.setOwner(spouse);
+            break;
+        }
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Spouse husband=new Spouse("Husband");
+        Spouse wife=new Spouse("Wife");
+        Spoon spoon=new Spoon(husband);
+
+        new Thread(()->husband.DinnerWithMyDeer(spoon,wife)).start();
+        new Thread(()-> wife.DinnerWithMyDeer(spoon,husband)).start();
+
+    }
+
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+/*
+output:   // coltei thakbe continuously
+ My dear Husband, please eat first :: status: RUNNABLE 
+ My dear Wife, please eat first :: status: RUNNABLE 
+ My dear Wife, please eat first :: status: RUNNABLE 
+ My dear Husband, please eat first :: status: RUNNABLE 
+ My dear Wife, please eat first :: status: RUNNABLE 
+ My dear Wife, please eat first :: status: RUNNABLE 
+ My dear Husband, please eat first :: status: RUNNABLE 
+ My dear Husband, please eat first :: status: RUNNABLE 
+ My dear Wife, please eat first :: status: RUNNABLE 
+ My dear Husband, please eat first :: status: RUNNABLE 
+ My dear Wife, please eat first :: status: RUNNABLE
+ .
+ .
+ .
+ .
+ .
+ .
+ 
+*/
