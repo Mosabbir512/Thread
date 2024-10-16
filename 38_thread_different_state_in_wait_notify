@@ -1,0 +1,50 @@
+import org.w3c.dom.ls.LSOutput;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        Object obj=new Object();  // normal obj
+        Object obj2=new Object();
+
+        Thread main=Thread.currentThread();
+        new Thread(()->{
+             sleep(5000);
+             synchronized (obj){   // lock acquire kore
+                 obj.notify();
+                 System.out.println("lock release by t0");  // notify but not release lock
+                 System.out.println("main thread state : "+main.getState());    // thats why main BLOCKED
+                 sleep(10000);
+             }      // lock release by t-0
+        }).start();
+
+        System.out.println("thread started: "+Thread.currentThread().getName());
+         synchronized (obj){     // monitoring obj
+             System.out.println("main inside sync block");
+             obj.wait();   // method call korle lock realease kore  => waiting state . when notify -> runnable ->Blocked
+             System.out.println("main releasing sync block");
+         }
+        System.out.println("thread ended: "+Thread.currentThread().getName());
+    }
+
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+
+/*
+outpu:
+
+thread started: main
+main inside sync block    
+lock release by t0    // wait 5s
+main thread state : BLOCKED
+main releasing sync block   // wait 10s
+thread ended: main
+*/
+
+
