@@ -20,7 +20,7 @@ public class Main {
          synchronized (obj){     // monitoring obj
              System.out.println("main inside sync block");
              obj.wait();   // method call korle lock realease kore  => waiting state . when notify -> runnable ->Blocked
-             System.out.println("main releasing sync block");
+             System.out.println("main releasing sync block");    // for println need lock
          }
         System.out.println("thread ended: "+Thread.currentThread().getName());
     }
