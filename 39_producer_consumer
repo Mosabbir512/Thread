@@ -1,0 +1,70 @@
+import javax.swing.*;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class  TaskQueue{
+    public final int max_size=10;
+    private final Queue<String>queue=new LinkedList<>();
+    public synchronized void produce(String  task){
+       if (queue.size()==max_size) {
+           try {
+               this.wait();
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+       }
+        queue.add(task);
+       this.notifyAll();
+    }
+    public synchronized String consume(){
+        if (queue.size()==0){
+            try {
+                this.wait();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+        }
+        String task= queue.poll();
+        this.notifyAll();
+        return  task;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        TaskQueue taskQueue=new TaskQueue();
+
+        Thread producer=new Thread(()->{
+                 int i=0;
+                 while (true){
+                     i++;
+                     String task="Task -> "+i;
+                     System.out.println("Producer : "+Thread.currentThread().getName()+" by task : "+task);
+                     taskQueue.produce(task);
+                     Main.sleep(200);
+                 }
+        });
+        producer.start();
+        Thread consume=new Thread(()->{
+            while (true){
+                String task=taskQueue.consume();
+                System.out.printf("Consumer : %s , Task = %s\n",Thread.currentThread().getName(),task);
+                Main.sleep(10000);
+            }
+        });
+        consume.start();
+    }
+
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+
