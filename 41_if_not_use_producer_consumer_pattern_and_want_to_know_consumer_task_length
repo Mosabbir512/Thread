@@ -1,0 +1,105 @@
+import javax.swing.*;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class  TaskQueue{
+    public final int max_size=10;
+    private final Queue<String>queue=new LinkedList<>();
+    public synchronized void produce(String  task){
+       queue.add(task);
+
+    }
+    public synchronized String consume(){
+        return  queue.poll();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        TaskQueue taskQueue=new TaskQueue();
+        for(int i=1;i<=3;i++){
+            new Thread(()->taskProduct(taskQueue)).start();
+        }
+        for(int i=1;i<=5;i++){
+            new Thread(()->taskConsume(taskQueue)).start();
+        }
+
+    }
+
+    static void taskProduct(TaskQueue taskQueue){
+        int i=0;
+        while (true){
+            i++;
+            String task="Task -> "+i;
+            System.out.println("Producer : "+Thread.currentThread().getName()+" by task : "+task);
+            taskQueue.produce(task);
+            Main.sleep(1000);
+        }
+    }
+
+    static void taskConsume(TaskQueue taskQueue){
+        while (true){
+            String task=taskQueue.consume();
+            System.out.printf("Consumer : %s , Task = %d\n",Thread.currentThread().getName(),task.length());
+            Main.sleep(200);
+        }
+    }
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+/*
+output:
+Exception in thread "Thread-3" java.lang.NullPointerException: Cannot invoke "String.length()" because "task" is null
+	at Main.taskConsume(Main.java:43)
+	at Main.lambda$main$1(Main.java:24)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Exception in thread "Thread-4" java.lang.NullPointerException: Cannot invoke "String.length()" because "task" is null
+	at Main.taskConsume(Main.java:43)
+	at Main.lambda$main$1(Main.java:24)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Exception in thread "Thread-5" java.lang.NullPointerException: Cannot invoke "String.length()" because "task" is null
+	at Main.taskConsume(Main.java:43)
+	at Main.lambda$main$1(Main.java:24)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Producer : Thread-1 by task : Task -> 1
+Producer : Thread-0 by task : Task -> 1
+Consumer : Thread-6 , Task = 9
+Producer : Thread-2 by task : Task -> 1
+Consumer : Thread-7 , Task = 9
+Consumer : Thread-6 , Task = 9
+Exception in thread "Thread-7" java.lang.NullPointerException: Cannot invoke "String.length()" because "task" is null
+	at Main.taskConsume(Main.java:43)
+	at Main.lambda$main$1(Main.java:24)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Exception in thread "Thread-6" java.lang.NullPointerException: Cannot invoke "String.length()" because "task" is null
+	at Main.taskConsume(Main.java:43)
+	at Main.lambda$main$1(Main.java:24)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Producer : Thread-1 by task : Task -> 2
+Producer : Thread-0 by task : Task -> 2
+Producer : Thread-2 by task : Task -> 2
+Producer : Thread-1 by task : Task -> 3
+Producer : Thread-0 by task : Task -> 3
+Producer : Thread-2 by task : Task -> 3
+Producer : Thread-1 by task : Task -> 4
+Producer : Thread-0 by task : Task -> 4
+Producer : Thread-2 by task : Task -> 4
+Producer : Thread-1 by task : Task -> 5
+Producer : Thread-0 by task : Task -> 5
+Producer : Thread-2 by task : Task -> 5
+Producer : Thread-1 by task : Task -> 6
+Producer : Thread-0 by task : Task -> 6
+Producer : Thread-2 by task : Task -> 6
+Producer : Thread-1 by task : Task -> 7
+Producer : Thread-0 by task : Task -> 7
+Producer : Thread-2 by task : Task -> 7
+Producer : Thread-1 by task : Task -> 8
+Producer : Thread-0 by task : Task -> 8
+*/
