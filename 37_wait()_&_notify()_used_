@@ -1,0 +1,42 @@
+import org.w3c.dom.ls.LSOutput;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        Object obj=new Object();  // normal obj
+        Object obj2=new Object();
+
+        new Thread(()->{
+             sleep(5000);
+             synchronized (obj){   // lock acquire korbe
+                 obj.notify();    // notify korbe 
+             }   
+        }).start();
+
+        System.out.println("thread started: "+Thread.currentThread().getName());
+         synchronized (obj){     // monitoring obj
+             System.out.println("main inside sync block");
+             obj.wait();   // method call korle lock realease kore waiting state e cole jabe
+             System.out.println("main releasing sync block");
+         }
+        System.out.println("thread ended: "+Thread.currentThread().getName());
+    }
+
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+
+/*
+output:
+thread started: main
+main inside sync block
+main releasing sync block
+thread ended: main
+ 
+*/
