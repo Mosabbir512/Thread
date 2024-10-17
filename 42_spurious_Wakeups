@@ -1,0 +1,168 @@
+import javax.swing.*;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class  TaskQueue{
+    public final int max_size=10;
+    private final Queue<String>queue=new LinkedList<>();
+    public synchronized void produce(String  task){
+        while (queue.size()==max_size) {
+            try {
+                this.wait();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        queue.add(task);
+        this.notifyAll();
+    }
+    public synchronized String consume(){
+        while (queue.size()==0){
+            try {
+                this.wait();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+        }
+        String task= queue.poll();
+        this.notifyAll();
+        return  task;
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        TaskQueue taskQueue=new TaskQueue();
+
+        for(int i=1;i<=3;i++){
+            new Thread(()->taskProduct(taskQueue)).start();
+        }
+        for(int i=1;i<=5;i++){
+            new Thread(()->taskConsume(taskQueue)).start();
+        }
+
+    }
+
+    static void taskProduct(TaskQueue taskQueue){
+        int i=0;
+        while (true){
+            i++;
+            String task="Task -> "+i;
+            System.out.println("Producer : "+Thread.currentThread().getName()+" by task : "+task);
+            taskQueue.produce(task);
+            Main.sleep(1000);
+        }
+    }
+
+    static void taskConsume(TaskQueue taskQueue){
+        while (true){
+            String task=taskQueue.consume();
+            System.out.printf("Consumer : %s , Task = %s\n",Thread.currentThread().getName(),task);
+            Main.sleep(200);
+        }
+    }
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+
+/9
+output:
+Producer : Thread-1 by task : Task -> 1
+Producer : Thread-0 by task : Task -> 1
+Consumer : Thread-3 , Task = Task -> 1
+Producer : Thread-2 by task : Task -> 1
+Consumer : Thread-5 , Task = Task -> 1
+Consumer : Thread-6 , Task = Task -> 1
+Producer : Thread-1 by task : Task -> 2
+Producer : Thread-0 by task : Task -> 2
+Consumer : Thread-4 , Task = Task -> 2
+Consumer : Thread-6 , Task = Task -> 2
+Producer : Thread-2 by task : Task -> 2
+Consumer : Thread-3 , Task = Task -> 2
+Producer : Thread-1 by task : Task -> 3
+Producer : Thread-0 by task : Task -> 3
+Consumer : Thread-6 , Task = Task -> 3
+Consumer : Thread-7 , Task = Task -> 3
+Producer : Thread-2 by task : Task -> 3
+Consumer : Thread-3 , Task = Task -> 3
+Producer : Thread-0 by task : Task -> 4
+Producer : Thread-1 by task : Task -> 4
+Consumer : Thread-5 , Task = Task -> 4
+Consumer : Thread-3 , Task = Task -> 4
+Producer : Thread-2 by task : Task -> 4
+Consumer : Thread-7 , Task = Task -> 4
+Producer : Thread-0 by task : Task -> 5
+Consumer : Thread-4 , Task = Task -> 5
+Producer : Thread-1 by task : Task -> 5
+Consumer : Thread-7 , Task = Task -> 5
+Producer : Thread-2 by task : Task -> 5
+Consumer : Thread-6 , Task = Task -> 5
+Producer : Thread-0 by task : Task -> 6
+Producer : Thread-1 by task : Task -> 6
+Consumer : Thread-3 , Task = Task -> 6
+Consumer : Thread-6 , Task = Task -> 6
+Producer : Thread-2 by task : Task -> 6
+Consumer : Thread-5 , Task = Task -> 6
+Producer : Thread-0 by task : Task -> 7
+Producer : Thread-1 by task : Task -> 7
+Consumer : Thread-7 , Task = Task -> 7
+Consumer : Thread-3 , Task = Task -> 7
+Producer : Thread-2 by task : Task -> 7
+Consumer : Thread-4 , Task = Task -> 7
+Producer : Thread-0 by task : Task -> 8
+Consumer : Thread-5 , Task = Task -> 8
+Producer : Thread-1 by task : Task -> 8
+Consumer : Thread-4 , Task = Task -> 8
+Producer : Thread-2 by task : Task -> 8
+Consumer : Thread-6 , Task = Task -> 8
+Producer : Thread-0 by task : Task -> 9
+Consumer : Thread-3 , Task = Task -> 9
+Producer : Thread-1 by task : Task -> 9
+Consumer : Thread-6 , Task = Task -> 9
+Producer : Thread-2 by task : Task -> 9
+Consumer : Thread-7 , Task = Task -> 9
+Producer : Thread-0 by task : Task -> 10
+Consumer : Thread-5 , Task = Task -> 10
+Producer : Thread-1 by task : Task -> 10
+Consumer : Thread-7 , Task = Task -> 10
+Producer : Thread-2 by task : Task -> 10
+Consumer : Thread-4 , Task = Task -> 10
+Producer : Thread-0 by task : Task -> 11
+Consumer : Thread-6 , Task = Task -> 11
+Producer : Thread-1 by task : Task -> 11
+Consumer : Thread-4 , Task = Task -> 11
+Producer : Thread-2 by task : Task -> 11
+Consumer : Thread-3 , Task = Task -> 11
+Producer : Thread-0 by task : Task -> 12
+Consumer : Thread-7 , Task = Task -> 12
+Producer : Thread-1 by task : Task -> 12
+Consumer : Thread-3 , Task = Task -> 12
+Producer : Thread-2 by task : Task -> 12
+Consumer : Thread-5 , Task = Task -> 12
+Producer : Thread-0 by task : Task -> 13
+Consumer : Thread-4 , Task = Task -> 13
+Producer : Thread-1 by task : Task -> 13
+Consumer : Thread-5 , Task = Task -> 13
+Producer : Thread-2 by task : Task -> 13
+Consumer : Thread-6 , Task = Task -> 13
+Producer : Thread-0 by task : Task -> 14
+Consumer : Thread-3 , Task = Task -> 14
+Producer : Thread-1 by task : Task -> 14
+Consumer : Thread-6 , Task = Task -> 14
+Producer : Thread-2 by task : Task -> 14
+Consumer : Thread-7 , Task = Task -> 14
+
+Process finished with exit code 130
+
+
+*/
