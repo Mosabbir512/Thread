@@ -1,0 +1,64 @@
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Main1 {
+
+    static synchronized void m(){
+        System.out.println("locked acquired 1 "+Thread.currentThread().getName());
+        synchronized (Main1.class){
+            System.out.println("locked acquired 2 "+Thread.currentThread().getName());
+            synchronized (Main1.class){
+                System.out.println("locked acquired 3 "+Thread.currentThread().getName());
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+
+        m();
+
+        ReentrantLock lock=new ReentrantLock();
+
+        new Thread(()->{
+            sleep(100);
+            lock.lock();   // waiting state e jay
+            System.out.println("locked acquired by (0) "+Thread.currentThread().getName());
+            lock.unlock();
+        }).start();
+
+        lock.lock();
+        System.out.println("locked acquired by (1) "+Thread.currentThread().getName());
+        lock.lock();
+        System.out.println("locked acquired by (2) "+Thread.currentThread().getName());
+        lock.lock();
+        System.out.println("locked acquired by (3) "+Thread.currentThread().getName());
+
+        int count=lock.getHoldCount();
+        sleep(1000);
+
+        for(int i=0;i<count;i++){
+            lock.unlock();
+        }
+
+    }
+    public static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+}
+
+/*
+
+output:
+locked acquired 1 main
+locked acquired 2 main
+locked acquired 3 main
+locked acquired by (1) main
+locked acquired by (2) main
+locked acquired by (3) main
+locked acquired by (0) Thread-0
+*/
