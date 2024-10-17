@@ -1,0 +1,35 @@
+public class Volatile {
+    static  boolean flag=true;  // program finished if we use volatile  // static volatile boolean flag=true;
+    public static void main(String[] args) throws Exception {
+
+        new Thread(()->{
+            while (flag){
+                // System.out.println("hello world");
+                // done something
+            }
+
+        }).start();
+
+        System.out.println("flag1 one sir here = "+ flag);
+        Thread.sleep(100);
+        flag=false;
+        System.out.println("falg2 two sir here= "+flag);
+        System.out.println("maind done");
+
+    }
+
+    static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+}
+
+/*
+volatile na use korle cache e true save hoye thake fole program terminated hoy na .. jodio amra pore flag false korse..
+volatile use korle bole je heap theke neya jabe na Main thekei nite hobe fole flag pore false hoye jay and program terminated hoye jay
+
+
+*/
