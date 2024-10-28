@@ -1,0 +1,49 @@
+
+public class Main2 {
+    public static void main(String[] args) {
+
+        Lock lock1=new ReentrantLock();
+        Lock lock2=new ReentrantLock();
+        Thread t1=new Thread(()->{
+             lock1.lock();
+            System.out.println("lock1 acquired by : "+ Thread.currentThread().getName());
+            sleep(100);
+            try {
+                lock2.lockInterruptibly();
+                System.out.println("lock2 acquired by : " + Thread.currentThread().getName());
+                lock2.unlock();
+            }
+            catch (InterruptedException ex){
+                ex.printStackTrace();
+            }
+            finally {
+
+            }
+
+            lock1.unlock();
+
+        });
+
+
+        Thread t2=new Thread(()->{
+            lock2.lock();
+            System.out.println("lock2 acquired by : "+ Thread.currentThread().getName());
+            sleep(100);
+            try {
+                lock1.lockInterruptibly();
+                System.out.println("lock1 acquired by : " + Thread.currentThread().getName());
+                lock1.unlock();
+            }catch (InterruptedException ex){
+                ex.printStackTrace();
+            }
+            finally {
+
+            }
+            lock2.unlock();
+
+    });
+        t1.start();
+        t2.start();
+
+    sleep(5000);
+        t1.interrupt();
