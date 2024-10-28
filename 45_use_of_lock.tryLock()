@@ -1,0 +1,61 @@
+import javax.swing.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+class BanckAccount{
+    int balance=0;
+    Lock lock=new ReentrantLock();
+    public void deposit(int amount){
+       try {
+           if (lock.tryLock(10, TimeUnit.MILLISECONDS)) {
+               try {
+                   if (amount <= 0) {
+                       System.out.println("invalied amount ");
+                       return;
+                   }
+                   int currBalance = this.balance;
+                   Main.sleep(50);
+                   int newBalance = currBalance + amount;
+                   this.balance = newBalance;
+               } finally {
+                   lock.unlock();
+               }
+           } else {
+               System.out.println("she was bussy");
+           }
+       }catch (Exception ex){
+           ex.printStackTrace();
+       }
+
+    }
+    public int currentBalance(){
+        return this.balance;
+    }
+
+}
+
+
+public class Main2 {
+    public static void main(String[] args) {
+        BanckAccount banckAccount=new BanckAccount();
+          Thread t1=new Thread(()->{
+              banckAccount.deposit(10000);
+          });
+          Thread t2=new Thread(()->{
+              banckAccount.deposit(10000);
+          });
+          t1.start();
+          t2.start();
+
+          sleep(1000);
+        System.out.println(banckAccount.currentBalance());
+    }
+    static void sleep(long ms){
+        try{Thread.sleep(ms);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+}
