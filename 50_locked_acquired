@@ -1,0 +1,45 @@
+import com.sun.jdi.ThreadReference;
+
+import javax.swing.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+
+
+public class Main2 {
+    public static void main(String[] args) {
+
+        ReentrantLock lock=new ReentrantLock();
+
+       Thread t1=new Thread(()->{
+           try {
+               sleep(100);
+               lock.lockInterruptibly();
+               System.out.println("lock acquire by : "+Thread.currentThread().getName());
+           }catch (InterruptedException ex){
+               System.err.println("inturrpted before the lock acquired");
+           }
+           finally {
+               lock.unlock();
+               System.out.println("locked release: "+Thread.currentThread().getName());
+           }
+       });
+
+       t1.start();
+
+        lock.lock();
+        System.out.println("lock acquired by thead: "+Thread.currentThread().getName());
+        sleep(1_000);
+        System.out.println("lock release by threada: "+Thread.currentThread().getName());
+        lock.unlock();
+
+    }
+    static void sleep(long ms){
+        try{Thread.sleep(ms);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+}
