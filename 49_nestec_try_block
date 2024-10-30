@@ -1,0 +1,78 @@
+import com.sun.jdi.ThreadReference;
+
+import javax.swing.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+class BanckAccount{
+    int balance=0;
+    Lock lock=new ReentrantLock();
+    public void deposit(int amount){
+       try {
+           if (lock.tryLock(10, TimeUnit.MILLISECONDS)) {
+               try {
+                   if (amount <= 0) {
+                       System.out.println("invalied amount ");
+                       return;
+                   }
+                   int currBalance = this.balance;
+                   Main.sleep(50);
+                   int newBalance = currBalance + amount;
+                   this.balance = newBalance;
+               } finally {
+                   lock.unlock();
+               }
+           } else {
+               System.out.println("she was bussy");
+           }
+       }catch (Exception ex){
+           ex.printStackTrace();
+       }
+
+    }
+    public int currentBalance(){
+        return this.balance;
+    }
+
+}
+
+
+public class Main2 {
+    public static void main(String[] args) {
+
+        Lock lock=new ReentrantLock();
+
+        Thread t=new Thread(()->{
+            try{
+                lock.lockInterruptibly(); // lock  hoilei niche jabe na hole catch option e jabe
+                try{
+                    System.out.println("lock acquired by : "+Thread.currentThread().getName());
+                    if(1==1)throw new RuntimeException("Ex...");
+                }finally {
+                    lock.unlock();
+                    System.out.println("lock acquired by : "+Thread.currentThread().getName() );
+                }
+
+            }catch (Exception ex){
+                System.err.println("get exceptio: "+ex.getMessage());
+            }
+        });
+
+        lock.lock();
+        t.start();
+
+        sleep(3000);
+        t.interrupt();
+
+
+
+    }
+    static void sleep(long ms){
+        try{Thread.sleep(ms);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+}
