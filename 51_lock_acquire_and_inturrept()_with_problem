@@ -15,7 +15,7 @@ public class Main2 {
        Thread t1=new Thread(()->{
            try {
                sleep(100);
-               lock.lockInterruptibly();
+               lock.lockInterruptibly();   // interrupt korle ar lock korte parbe na exception throw korbe  // unlock korar por problem hobe na
                System.out.println("lock acquire by : "+Thread.currentThread().getName());
            }catch (InterruptedException ex){
                System.err.println("inturrpted before the lock acquired");
